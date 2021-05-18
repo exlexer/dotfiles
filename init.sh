@@ -7,5 +7,6 @@ brew update;
 brew install neovim;
 brew install bat;
 
+rm -rf $HOME/.config/nvim;
 mkdir $HOME/.config/nvim;
-cp -r $HOME/.config/nvim ./.config/nvim;
+cp -r ./.config/nvim $HOME/.config/nvim;
