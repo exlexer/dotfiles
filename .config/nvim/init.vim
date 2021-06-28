@@ -15,58 +15,52 @@ set nobackup
 set undodir=~/.vim/undodir
 set undofile
 set incsearch
-
+set mouse=a
 set colorcolumn=120
-highlight ColorColumn ctermbg=0 guibg=lightgrey
+set nocompatible
+highlight ColorColumn ctermbg=0 guibg=darkgray
 
-set nocompatible              " be iMproved, required
-filetype off                  " required
+filetype off
 
 let g:python_host_prog="/Users/kylehilton/.pyenv/shims/python"
 
+call plug#begin('~/.vim/plugged')
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+Plug 'preservim/nerdcommenter'
+Plug 'ayu-theme/ayu-vim'
+Plug 'git@github.com:moll/vim-node.git'
+Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+Plug 'junegunn/fzf', {'dir': '~/.fzf','do': './install --all'}
+Plug 'junegunn/fzf.vim' 
+Plug 'antoinemadec/coc-fzf'
+Plug 'yuezk/vim-js'
+Plug 'maxmellon/vim-jsx-pretty'
 
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'preservim/nerdcommenter'
-Plugin 'git@github.com:rking/ag.vim.git'
-Plugin 'morhetz/gruvbox'
-Plugin 'git@github.com:moll/vim-node.git'
-Plugin 'junegunn/fzf.vim'
-Plugin 'junegunn/fzf'
-Plugin 'jremmen/vim-ripgrep'
-Plugin 'neoclide/coc.nvim'
-Plugin 'yuezk/vim-js'
-Plugin 'maxmellon/vim-jsx-pretty'
+call plug#end()
+filetype plugin indent on
 
-call vundle#end()            " required
-filetype plugin indent on    " required
+set termguicolors
+let ayucolor="mirage"
+colorscheme ayu
 
-colorscheme gruvbox
-set background=dark
+nnoremap <SPACE> <Nop>
+let mapleader=" "
 
-" ==== ripgrep ====
-if executable('rg')
-  let g:rg_derive_root = 'true'
-endif
-
-" ==== Tab mapping ====
-map <F4> :tabr<cr>
-map <F7> :tabl<cr>
-map <F5> :tabp<cr>
-map <F6> :tabn<cr>
-map <F3> :tabclose<cr>
+" ==== CocFzf configuration ====
+nnoremap <silent> <leader><space> :<C-u>CocFzfList<CR>
+nnoremap <silent> <leader>a       :<C-u>CocFzfList diagnostics<CR>
+nnoremap <silent> <leader>b       :<C-u>CocFzfList diagnostics --current-buf<CR>
+nnoremap <silent> <leader>c       :<C-u>CocFzfList commands<CR>
+nnoremap <silent> <leader>e       :<C-u>CocFzfList extensions<CR>
+nnoremap <silent> <leader>l       :<C-u>CocFzfList location<CR>
+nnoremap <silent> <leader>o       :<C-u>CocFzfList outline<CR>
+nnoremap <silent> <leader>s       :<C-u>CocFzfList symbols<CR>
+nnoremap <silent> <leader>p       :<C-u>FZF<CR>
 
 " ==== CocExplorer configuration ====
-nnoremap <space>e :CocCommand explorer<CR>
+nnoremap <silent> <leader>e :CocCommand explorer<CR>
 
 " ==== NERDCommenter configuration ====
 let g:NERDCreateDefaultMappings = 1
-
-" ==== FZF configuration ====
-nnoremap <C-p> :GFiles<CR>
 
 set path=.,node_modules
