@@ -26,9 +26,9 @@ main () {
     install_rg
     install_plug
     install_tmux
+    install_tmuxinator
     install_neovim
     install_alacritty
-
 
     for i in ${DOTFILES[@]}; do
         link_dotfile $i
@@ -82,29 +82,37 @@ install_tmux() {
     fi
 }
 
+install_tmuxinator() {
+  if !(command_exists tmuxinator); then
+    brew install tmuxinator
+
+    mkdir ~/.config/tmuxinator
+    ln -s ~/"$EXPORT_DIR/config/tmuxinator/template.yml" ~/.config/tmuxinator/template.yml
+  else
+    installed 'tmuxinator'
+  fi
+}
+
 install_neovim() {
     if !(command_exists nvim); then
         brew install neovim/neovim/neovim
         ln -s ~/.vim ~/.config/nvim
         ln -s ~/.vimrc ~/.config/nvim/init.vim
-        ls -s ~/"$EXPORT_DIR/config/coc-settings.json" ~/.vim/coc-settings.json
+        ln -s ~/"$EXPORT_DIR/config/coc-settings.json" ~/.config/nvim/coc-settings.json
     else
         installed 'neovim'
     fi
 }
 
 install_alacritty() {
-    if !(command_exists alacritty); then
-        brew cask install alacritty
-
+    FILE="/Applications/Alacritty.app"
+    if [ ! -d "$FILE" ]; then
         # clone
         git clone https://github.com/alacritty/alacritty.git
         cd alacritty
 
-        # Install terminfo globally, I'm thinking this is to make the awesome
-        # true colors & italic fonts work
-        # We also change default terminal to alacritty in ~/.tmux.conf to use this
-        sudo tic -xe alacritty,alacritty-direct extra/alacritty.info
+        make app
+        cp -r target/release/osx/Alacritty.app /Applications/
 
         # clean
         cd ..
@@ -121,5 +129,19 @@ install_alacritty() {
         installed 'alacritty'
     fi
 }
+
+link_dotfile() {
+  src=$1
+  dst=.$1
+  rm -rf -f $dst
+  ln -s $EXPORT_DIR/$src $dst
+}
+
+EXPORT_DIR=$(dirname "${PWD}/$0")
+DOTFILES=(
+  vimrc
+  zshrc
+  tmux.conf
+)
 
 main
