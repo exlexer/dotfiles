@@ -1,5 +1,7 @@
- name: name_here
- root: ~/Sites
+# /Users/exlexer/.config/tmuxinator/templates.yml
+
+name: templates
+root: ~/Sites/exlexer.github.io
 
 # Optional tmux socket
 # socket_name: foo
@@ -29,7 +31,7 @@
 # tmux_command: byobu
 
 # Specifies (by name or index) which window will be selected on project startup. If not set, the first window is used.
-startup_window: editor
+# startup_window: editor
 
 # Specifies (by index) which pane of the specified window will be selected on project startup. If not set, the first pane is used.
 # startup_pane: 1
@@ -39,9 +41,7 @@ startup_window: editor
 
 windows:
   - editor:
-      #layout: main-vertical
       layout: 6546,320x78,0,0{220x78,0,0,0,99x78,221,0[99x38,221,0,1,99x39,221,39,2]}
       panes:
         - nvim
-        - ls
-        - ls
+        - guard
