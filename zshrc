@@ -44,4 +44,4 @@ newTmuxinatorTemp() {
   tmuxinator copy template $1
 }
 
-r /usr/local/opt/asdf/asdf.sh
+. /usr/local/opt/asdf/asdf.sh

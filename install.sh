@@ -45,12 +45,8 @@ install_zsh() {
 
     DIR="/Users/$USER/.oh-my-zsh"
     if [ ! -d "$DIR" ]; then
-        # https://github.com/ohmyzsh/ohmyzsh#unattended-install
         sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-        # Remove zshrc created by oh-my-zsh by default because we have our own
         rm -rf ~/.zshrc
-        # Setup theme in oh-my-zsh
-        cp "$EXPORT_DIR/themes/clean-minimal.zsh-theme" ~/.oh-my-zsh/themes/clean-minimal.zsh-theme
     else
         installed 'oh-my-zsh'
     fi
@@ -87,7 +83,7 @@ install_tmuxinator() {
     brew install tmuxinator
 
     mkdir ~/.config/tmuxinator
-    ln -s ~/"$EXPORT_DIR/config/tmuxinator/template.yml" ~/.config/tmuxinator/template.yml
+    cp ./config/tmuxinator/template.yml ~/.config/tmuxinator/template.yml
   else
     installed 'tmuxinator'
   fi
@@ -96,13 +92,15 @@ install_tmuxinator() {
 install_neovim() {
     if !(command_exists nvim); then
         brew install neovim/neovim/neovim
-        ln -s ~/.vim ~/.config/nvim
-        ln -s ~/.vimrc ~/.config/nvim/init.vim
-        ln -s ~/"$EXPORT_DIR/config/coc-settings.json" ~/.config/nvim/coc-settings.json
+        ln -Fs ~/.vim ~/.config/nvim
+        ln -Fs ~/.vimrc ~/.config/nvim/init.vim
+        ln -Fs ~/"$EXPORT_DIR/config/coc-settings.json" ~/.config/nvim/coc-settings.json
     else
         installed 'neovim'
     fi
 }
+
+echo "$EXPORT_DIR"
 
 install_alacritty() {
     FILE="/Applications/Alacritty.app"
@@ -120,7 +118,7 @@ install_alacritty() {
 
         # Symlink config file
         mkdir -p .config/alacritty
-        ln -s "$EXPORT_DIR/config/alacritty.yml" ~/.config/alacritty/alacritty.yml
+        ln -Fs "$EXPORT_DIR/config/alacritty.yml" ~/.config/alacritty/alacritty.yml
 
         # Enable smoothing on mac
         defaults write -g CGFontRenderingFontSmoothingDisabled -bool NO
@@ -134,7 +132,7 @@ link_dotfile() {
   src=$1
   dst=.$1
   rm -rf -f $dst
-  ln -s $EXPORT_DIR/$src $dst
+  ln -Fs $EXPORT_DIR/$src $dst
 }
 
 EXPORT_DIR=$(dirname "${PWD}/$0")
